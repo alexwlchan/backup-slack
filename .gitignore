@@ -1,0 +1,14 @@
+# default output locations
+channels/*
+users.json
+
+# Python build artefacts
+*.egg-info
+*.pyc
+*.pyo
+__pycache__
+
+# test directories
+.cache
+.coverage
+.tox
