@@ -1,6 +1,7 @@
 # default output locations
 channels/*
 direct_messages/*
+private_channels/*
 users.json
 
 # Python build artefacts

@@ -63,6 +63,14 @@ class SlackHistory(object):
         """Returns the message history for a channel."""
         return self._get_history(self.slack.channels, channel_id=channel['id'])
 
+    def private_channels(self):
+        """Returns a list of private channels."""
+        return self.slack.groups.list().body['groups']
+
+    def private_channel_history(self, channel):
+        """Returns the message history for a private channel."""
+        return self._get_history(self.slack.groups, channel_id=channel['id'])
+
     def dm_threads(self):
         """Returns a list of direct message threads."""
         threads = []

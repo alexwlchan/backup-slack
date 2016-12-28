@@ -3,7 +3,8 @@
 
 from .api import SlackHistory
 from .downloaders import (
-    download_dm_threads, download_public_channels, download_usernames)
+    download_dm_threads, download_private_channels, download_public_channels,
+    download_usernames)
 
 __version__ = '1.0.0'
 
@@ -11,6 +12,7 @@ __version__ = '1.0.0'
 USERNAMES = 'users.json'
 DIRECT_MESSAGES = 'direct_messages'
 PUBLIC_CHANNELS = 'channels'
+PRIVATE_CHANNELS = 'private_channels'
 
 
 def main():
@@ -24,3 +26,6 @@ def main():
 
     download_dm_threads(slack, outdir=DIRECT_MESSAGES)
     print('Saved direct messages to %s' % DIRECT_MESSAGES)
+
+    download_private_channels(slack, outdir=PRIVATE_CHANNELS)
+    print('Saved private channels to %s' % PRIVATE_CHANNELS)

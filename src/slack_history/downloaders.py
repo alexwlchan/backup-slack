@@ -66,7 +66,19 @@ def download_usernames(slack, path):
 
 
 def download_dm_threads(slack, outdir):
+    """Download the message history for this user's direct message threads."""
     for thread in slack.dm_threads():
         history = slack.dm_thread_history(thread=thread)
         path = os.path.join(outdir, '%s.json' % thread['username'])
         download_history(channel_info=thread, history=history, path=path)
+
+
+def download_private_channels(slack, outdir):
+    """Download the message history for the private channels where this user
+    is logged in.
+    """
+    for thread in slack.private_channels():
+        history = slack.private_channel_history(thread=thread)
+        path = os.path.join(outdir, '%s.json' % thread['username'])
+        download_history(channel_info=thread, history=history, path=path)
+
