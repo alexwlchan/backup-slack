@@ -4,7 +4,7 @@
 import os
 import sys
 
-from .api import SlackHistory
+from .api import AuthenticationError, SlackHistory
 from .cli import parse_args
 from .downloaders import (
     download_dm_threads, download_private_channels, download_public_channels,
@@ -23,7 +23,10 @@ PRIVATE_CHANNELS = 'private_channels'
 def main():
     args = parse_args(prog=os.path.basename(sys.argv[0]), version=__version__)
 
-    slack = SlackHistory(token=open('token.txt').read().strip())
+    try:
+        slack = SlackHistory(token=args.token)
+    except AuthenticationError as err:
+        sys.exit(err)
 
     mkdir_p(args.outdir)
 

@@ -8,14 +8,25 @@ import slacker
 from .utils import slack_ts_to_datetime
 
 
+class AuthenticationError(Exception):
+    pass
+
+
 class SlackHistory(object):
     """Wrapper around the Slack API.  This provides a few convenience
     wrappers around slacker.Slacker for the particular purpose of history
     download.
     """
 
-    def __init__(self, *args, **kwargs):
-        self.slack = slacker.Slacker(*args, **kwargs)
+    def __init__(self, token):
+        self.slack = slacker.Slacker(token=token)
+
+        # Check the token is valid
+        try:
+            self.slack.auth.test()
+        except slacker.Error:
+            raise AuthenticationError('Unable to authenticate API token.')
+
         self.usernames = self._fetch_user_mapping()
 
     def _get_history(self, channel_class, channel_id):
