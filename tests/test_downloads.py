@@ -18,7 +18,7 @@ class TestDownloadUsernames(object):
 
     slack = MockSlack()
 
-    def test_download_usernames(self, tmpdir):
+    def test_download_usernames(self, slack, tmpdir):
         """Test `download_usernames` when there isn't an existing file."""
         path = tmpdir.join('users.json')
         assert not path.exists()
@@ -50,3 +50,65 @@ class TestDownloadUsernames(object):
 
         # Check the user ID that was updated in the API response was updated
         assert json.loads(path.read())['U01000'] == 'marie_curie'
+
+
+class TestDownloadHistory(object):
+
+    history = [
+        {
+            'body': 'message 3',
+            'ts': '300',
+        },
+        {
+            'body': 'message 2',
+            'ts': '200',
+        },
+        {
+            'body': 'message 1',
+            'ts': '100',
+        },
+    ]
+
+    def test_download_history(self, tmpdir):
+        """Test for `download_history` in a fresh file."""
+        path = tmpdir.join('export.json')
+        assert not path.exists()
+
+        downloaders.download_history(
+            channel_info='my_great_channel',
+            history=self.history,
+            path=str(path))
+
+        assert path.exists()
+        assert json.loads(path.read()) == {
+            'channel': 'my_great_channel',
+            'messages': self.history,
+        }
+
+    def test_download_history(self, tmpdir):
+        """Test for `download_history` with a pre-existing file."""
+        path = tmpdir.join('export.json')
+        assert not path.exists()
+
+        # First create a file with some messages
+        downloaders.download_history(
+            channel_info='my_great_channel',
+            history=self.history,
+            path=str(path))
+
+        # This generator will return some more messages, including messages
+        # that have already been saved.  It will error if we try to read
+        # more than one message that has already been saved to disk.
+        def new_history():
+            yield {'body': 'message 5', 'ts': '500'}
+            yield {'body': 'message 4', 'ts': '400'}
+            yield {'body': 'message 3', 'ts': '300'}
+            assert False, 'Tried to read too many already-saved messages'
+
+        downloaders.download_history(
+            channel_info='my_great_channel',
+            history=new_history(),
+            path=str(path))
+
+        # Check that the new file contains five entries -- not six!
+        assert len(json.loads(path.read())['messages']) == 5
