@@ -1,19 +1,29 @@
 # -*- encoding: utf-8
 """Wrappers for the Slack API."""
 
+import operator
+
 import slacker
 
 from .utils import slack_ts_to_datetime
 
 
 class SlackHistory(object):
+    """Wrapper around the Slack API.  This provides a few convenience
+    wrappers around slacker.Slacker for the particular purpose of history
+    download.
+    """
 
     def __init__(self, *args, **kwargs):
         self.slack = slacker.Slacker(*args, **kwargs)
         self.usernames = self._fetch_user_mapping()
 
     def _get_history(self, channel_class, channel_id):
-        """Returns the message history for a channel, group or DM thread."""
+        """Returns the message history for a channel, group or DM thread.
+
+        Newest messages are returned first.
+
+        """
         # This wraps the `channels.history`, `groups.history` and `im.history`
         # methods from the Slack API, which can return up to 1000 messages
         # at once.
@@ -29,7 +39,9 @@ class SlackHistory(object):
                                              latest=last_timestamp,
                                              oldest=0,
                                              count=1000)
-            for msg in response.body['messages']:
+            for msg in sorted(response.body['messages'],
+                              key=operator.itemgetter('ts'),
+                              reverse=True):
                 last_timestamp = msg['ts']
                 msg['date'] = str(slack_ts_to_datetime(msg['ts']))
                 msg['username'] = self.usernames[msg['user']]

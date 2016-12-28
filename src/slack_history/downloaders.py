@@ -18,13 +18,19 @@ def download_history(channel_info, history, path):
     except OSError:
         existing_messages = []
 
+    # TODO: For convenience, the messages yielded from `history` usually
+    # have more than just the raw Slack API response: in particular, they have
+    # a username and a date string.  If the username and/or timestamp format
+    # changes, we could inadvertently save duplicate messages.
     for msg in history:
         if msg in existing_messages:
             break
         existing_messages.append(msg)
 
+    # Newest messages appear at the top of the file
     existing_messages = sorted(existing_messages,
-                               key=operator.itemgetter('ts'))
+                               key=operator.itemgetter('ts'),
+                               reverse=True)
     data = {
         'channel': channel_info,
         'messages': existing_messages,
