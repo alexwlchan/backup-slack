@@ -46,4 +46,3 @@ def test_dm_threads_have_usernames(slack):
 
     for thread in slack.dm_threads():
         assert 'username' in thread
-

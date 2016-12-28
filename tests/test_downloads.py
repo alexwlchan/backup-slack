@@ -85,7 +85,7 @@ class TestDownloadHistory(object):
             'messages': self.history,
         }
 
-    def test_download_history(self, tmpdir):
+    def test_download_history_with_updates(self, tmpdir):
         """Test for `download_history` with a pre-existing file."""
         path = tmpdir.join('export.json')
         assert not path.exists()
