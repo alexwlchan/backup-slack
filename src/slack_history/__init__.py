@@ -26,16 +26,19 @@ def main():
     slack = SlackHistory(token=open('token.txt').read().strip())
 
     mkdir_p(args.outdir)
-    os.chdir(args.outdir)
 
-    download_usernames(slack, path=USERNAMES)
-    print('Saved username list to %s' % USERNAMES)
+    usernames = os.path.join(args.outdir, USERNAMES)
+    print('Saving username list to %s' % usernames)
+    download_usernames(slack, path=usernames)
 
-    download_public_channels(slack, outdir=PUBLIC_CHANNELS)
-    print('Saved public channels to %s' % PUBLIC_CHANNELS)
+    public_channels = os.path.join(args.outdir, PUBLIC_CHANNELS)
+    print('Saving public channels to %s' % public_channels)
+    download_public_channels(slack, outdir=public_channels)
 
-    download_dm_threads(slack, outdir=DIRECT_MESSAGES)
-    print('Saved direct messages to %s' % DIRECT_MESSAGES)
+    private_channels = os.path.join(args.outdir, PRIVATE_CHANNELS)
+    print('Saving private channels to %s' % private_channels)
+    download_private_channels(slack, outdir=private_channels)
 
-    download_private_channels(slack, outdir=PRIVATE_CHANNELS)
-    print('Saved private channels to %s' % PRIVATE_CHANNELS)
+    direct_messages = os.path.join(args.outdir, DIRECT_MESSAGES)
+    print('Saving direct messages to %s' % direct_messages)
+    download_dm_threads(slack, outdir=direct_messages)
