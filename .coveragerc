@@ -1,9 +1,0 @@
-[run]
-branch = True
-include =
-    **/.tox/*/lib/*/site-packages/slack_history/*.py
-
-[report]
-show_missing = True
-exclude_lines =
-    if __name__ == '__main__'
