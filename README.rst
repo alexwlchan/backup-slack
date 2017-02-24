@@ -20,13 +20,13 @@ To install slack_history, use ``pip``:
 
 .. code-block:: console
 
-   $ pip install slack_history
+   $ pip install -e git+git://github.com/alexwlchan/backup-slack.git
 
 or `pipsi <https://github.com/mitsuhiko/pipsi>`_:
 
 .. code-block:: console
 
-   $ pipsi install slack_history
+   $ pipsi install -e git+git://github.com/alexwlchan/backup-slack.git
 
 You can use Python 2.7 and Python 3.3+.
 
@@ -38,14 +38,14 @@ You run the tool on the command-line, passing a `Slack API token
 
 .. code-block:: console
 
-   $ slack_history --token='abcdef'
+   $ backup_slack --token='abcdef'
 
 This saves a series of JSON files to the current directory.  To see other
 options, run with the ``--help`` flag:
 
 .. code-block:: console
 
-   $ slack_history --help
+   $ backup_slack --help
 
 License
 -------
