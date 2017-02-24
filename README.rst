@@ -16,7 +16,7 @@ through the Slack API.
 Installation
 ------------
 
-To install slack_history, use ``pip``:
+To install this script, use pip:
 
 .. code-block:: console
 
