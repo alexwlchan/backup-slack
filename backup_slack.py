@@ -47,7 +47,7 @@ def download_history(channel_info, history, path):
     try:
         with open(path) as infile:
             existing_messages = json.load(infile)['messages']
-    except OSError:
+    except (IOError, OSError):
         existing_messages = []
 
     # TODO: For convenience, the messages yielded from `history` usually
@@ -88,7 +88,7 @@ def download_usernames(slack, path):
     try:
         with open(path) as infile:
             usernames = json.load(infile)
-    except OSError:
+    except (IOError, OSError):
         usernames = {}
 
     usernames.update(slack.usernames)
