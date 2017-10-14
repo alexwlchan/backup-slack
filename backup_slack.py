@@ -160,7 +160,10 @@ class SlackHistory(object):
                               reverse=True):
                 last_timestamp = msg['ts']
                 msg['date'] = str(slack_ts_to_datetime(msg['ts']))
-                msg['username'] = self.usernames[msg['user']]
+                try:
+                    msg['username'] = self.usernames[msg['user']]
+                except KeyError:  # bot users
+                    pass
                 yield msg
             if not response.body['has_more']:
                 return
