@@ -110,8 +110,8 @@ def download_private_channels(slack, outdir):
     is logged in.
     """
     for thread in slack.private_channels():
-        history = slack.private_channel_history(thread=thread)
-        path = os.path.join(outdir, '%s.json' % thread['username'])
+        history = slack.private_channel_history(channel=thread)
+        path = os.path.join(outdir, '%s.json' % thread['name'])
         download_history(channel_info=thread, history=history, path=path)
 
 
