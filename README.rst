@@ -1,3 +1,10 @@
+**Notice:** I'm not currently using or maintaining this code.
+
+It worked when I last tried it in mid-2017, but there may be bugs or Slack API changes that cause issues.
+I don't have the time or energy to work on this right now – feel free to use the code, but any fixes will have to go in a fork.
+
+----
+
 slack_history
 =============
 
@@ -41,7 +48,7 @@ You run the tool on the command-line, passing a `Slack API token
    $ backup_slack --token='abcdef'
 
 This saves a series of JSON files to the current directory.  To see other
-options, run with the ``--help`` flag:
+options, run with the ``--help`` flag: 
 
 .. code-block:: console
 
